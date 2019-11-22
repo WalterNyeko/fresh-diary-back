@@ -6,6 +6,7 @@ import com.fresh.freshdiary.model.Customers;
 import com.fresh.freshdiary.service.CustomerService;
 
 @RestController
+@CrossOrigin
 public class CustomerController {
 	
 	@Autowired

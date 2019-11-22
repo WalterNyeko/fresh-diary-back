@@ -1,6 +1,7 @@
 package com.fresh.freshdiary.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,5 +28,10 @@ public class UserServiceImpl implements UserDetailsService{
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 new ArrayList<>());
     }
+	
+	public Iterable<UserInfo> listAllUsers() {
+		Iterable<UserInfo> users = userInfoRepository.findAll();
+		return users;
+	}
 
 }
