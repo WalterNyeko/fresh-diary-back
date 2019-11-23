@@ -21,19 +21,22 @@ public class ProductServiceImpl implements ProductService {
 	public Product saveProduct(Product product) {
 		try {
 			Slug slug = new Slug();
-			 try {
-				 QRCodeGenerator.generateQRCodeImage("https://fresh-diary-app.herokuapp.com/#/draw/"+product.getId(), 350, 350, QR_CODE_IMAGE_PATH);
-		        } catch (WriterException e) {
-		            System.out.println("Could not generate QR Code, WriterException :: " + e.getMessage());
-		        } catch (IOException e) {
-		            System.out.println("Could not generate QR Code, IOException :: " + e.getMessage());
-		        }
+			
 			String qrTitle = product.getProductName()+"-QR";
 			String awsProductLink = "https://alationbucket.s3.us-east-2.amazonaws.com/"+slug.makeSlug(product.getProductName());
 			String awsQRCodetLink = "https://alationbucket.s3.us-east-2.amazonaws.com/"+slug.makeSlug(qrTitle);
 			product.setProductAWSLink(awsProductLink);
 			product.setProductQRLink(awsQRCodetLink);
 			productRepository.save(product);
+			Product theProduct = productRepository.findByProductName(product.getProductName());
+			
+			 try {
+				 QRCodeGenerator.generateQRCodeImage("https://fresh-diary-app.herokuapp.com/#/draw/"+theProduct.getId(), 350, 350, QR_CODE_IMAGE_PATH);
+		     } catch (WriterException e) {
+		            System.out.println("Could not generate QR Code, WriterException :: " + e.getMessage());
+		     } catch (IOException e) {
+		            System.out.println("Could not generate QR Code, IOException :: " + e.getMessage());
+		     }
 			return product;
 			
 		}catch(Exception e) {

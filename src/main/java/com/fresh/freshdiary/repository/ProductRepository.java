@@ -6,5 +6,8 @@ import com.fresh.freshdiary.model.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>{
+	
 	Product findProductById(Long productId);
+	
+	Product findByProductName(String productName);
 }
