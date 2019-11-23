@@ -1,5 +1,17 @@
 package com.fresh.freshdiary.model;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="customers")
@@ -28,10 +40,15 @@ public class Customers {
 	@Column(name = "receipt_number")
 	private String receiptNumber;
 	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "product_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Product product;
+	
 	public Customers() {}
 
 	public Customers(Long id, String firstName, String lastName, String outlet, String phoneNumber, String location,
-			String receiptNumber) {
+			String receiptNumber, Product product) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -40,6 +57,7 @@ public class Customers {
 		this.phoneNumber = phoneNumber;
 		this.location = location;
 		this.receiptNumber = receiptNumber;
+		this.product = product;
 	}
 
 	public Long getId() {
@@ -96,6 +114,14 @@ public class Customers {
 
 	public void setReceiptNumber(String receiptNumber) {
 		this.receiptNumber = receiptNumber;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	@Override

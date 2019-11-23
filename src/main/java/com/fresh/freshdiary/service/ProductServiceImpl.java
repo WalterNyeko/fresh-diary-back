@@ -20,10 +20,9 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Product saveProduct(Product product) {
 		try {
-			AWSConfigurations awsConfig = new AWSConfigurations();
 			Slug slug = new Slug();
 			 try {
-				 QRCodeGenerator.generateQRCodeImage(product.getProductName(), 350, 350, QR_CODE_IMAGE_PATH);
+				 QRCodeGenerator.generateQRCodeImage("https://fresh-diary-app.herokuapp.com/#/draw/"+product.getId(), 350, 350, QR_CODE_IMAGE_PATH);
 		        } catch (WriterException e) {
 		            System.out.println("Could not generate QR Code, WriterException :: " + e.getMessage());
 		        } catch (IOException e) {
@@ -32,15 +31,10 @@ public class ProductServiceImpl implements ProductService {
 			String qrTitle = product.getProductName()+"-QR";
 			String awsProductLink = "https://alationbucket.s3.us-east-2.amazonaws.com/"+slug.makeSlug(product.getProductName());
 			String awsQRCodetLink = "https://alationbucket.s3.us-east-2.amazonaws.com/"+slug.makeSlug(qrTitle);
-//			if(awsConfig.uploadToBucket("alationbucket", slug.makeSlug(product.getProductName()), product.getProductAWSLink()) &&
-//					awsConfig.uploadToBucket("alationbucket", qrTitle, QR_CODE_IMAGE_PATH)) {
-				product.setProductAWSLink(awsProductLink);
-				product.setProductQRLink(awsQRCodetLink);
-				productRepository.save(product);
-				return product;
-//			}else {
-//				return null;
-//			}
+			product.setProductAWSLink(awsProductLink);
+			product.setProductQRLink(awsQRCodetLink);
+			productRepository.save(product);
+			return product;
 			
 		}catch(Exception e) {
 			return null;
