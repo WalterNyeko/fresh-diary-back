@@ -19,16 +19,20 @@ public class Product {
 	@Column(name = "product_aws_qr_link")
 	private String productQRLink;
 
+	@Column(name = "product_description")
+	private String productDescription;
 	
 	public Product() {}
 
 
-	public Product(Long id, String productName, String productAWSLink, String productQRLink) {
+	public Product(Long id, String productName, String productAWSLink, 
+			String productQRLink, String productDescription) {
 		super();
 		this.id = id;
 		this.productName = productName;
 		this.productAWSLink = productAWSLink;
 		this.productQRLink = productQRLink;
+		this.productDescription = productDescription;
 	}
 
 
@@ -69,6 +73,16 @@ public class Product {
 
 	public void setProductQRLink(String productQRLink) {
 		this.productQRLink = productQRLink;
+	}
+
+
+	public String getProductDescription() {
+		return productDescription;
+	}
+
+
+	public void setProductDescription(String productDescription) {
+		this.productDescription = productDescription;
 	}
 
 

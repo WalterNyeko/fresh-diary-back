@@ -9,9 +9,10 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
@@ -28,8 +29,8 @@ public class AWSConfigurations {
 		return credentials;
 	}
 	
-	public AmazonS3 getS3Client() {
-		AmazonS3 s3client = AmazonS3ClientBuilder
+	public AmazonS3Client getS3Client() {
+		AmazonS3Client s3client = (AmazonS3Client) AmazonS3ClientBuilder
 				  .standard()
 				  .withCredentials(new AWSStaticCredentialsProvider(this.verifyCredentials()))
 				  .withRegion(Regions.US_EAST_2)
@@ -60,16 +61,16 @@ public class AWSConfigurations {
 		}
 	}
 	
-	public boolean uploadToBucket(String bucketName, String bucketItemURL, String filePath) {
+	public String uploadToBucket(String bucketName, String bucketItemURL, String filePath) {
 		try {
 			this.getS3Client().putObject(
 					  bucketName, 
 					  bucketItemURL, 
-					  new File(filePath)
-					);
-			return true;
+					  new File(filePath));
+			String urlToObject = this.getS3Client().getResourceUrl(bucketName, bucketItemURL);
+			return urlToObject;
 		}catch(Exception e) {
-			return false;
+			return null;
 		}
 	}
 	

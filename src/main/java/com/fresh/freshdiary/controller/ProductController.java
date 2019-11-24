@@ -1,6 +1,13 @@
 package com.fresh.freshdiary.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,4 +55,17 @@ public class ProductController {
 	public void deleteProduct(@PathVariable Long productId) {
 		productService.deleteProduct(productId);
 	}
+	
+	@RequestMapping(value="/view", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<byte[]> getImage() throws IOException {
+
+        ClassPathResource imgFile = new ClassPathResource("qrcodes/cow-milk.jpg");
+        byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(bytes);
+    
+    }
 }
