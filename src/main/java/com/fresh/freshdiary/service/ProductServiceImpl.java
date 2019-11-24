@@ -28,9 +28,9 @@ public class ProductServiceImpl implements ProductService {
 			 try {
 				 QRCodeGenerator.generateQRCodeImage("https://fresh-diary-app.herokuapp.com/#/draw/"+theProduct.getId(), 
 						 350, 350, QR_CODE_IMAGE_PATH+slug.makeSlug(theProduct.getProductName())+".jpg");
-				 theProduct.setProductQRLink(aws.uploadToBucket("alationbucket", slug.makeSlug(theProduct.getProductName()), 
-						 QR_CODE_IMAGE_PATH+slug.makeSlug(theProduct.getProductName())+".jpg"));
-				 productRepository.save(theProduct);
+//				 theProduct.setProductQRLink(aws.uploadToBucket("alationbucket", slug.makeSlug(theProduct.getProductName()), 
+//						 QR_CODE_IMAGE_PATH+slug.makeSlug(theProduct.getProductName())+".jpg"));
+//				 productRepository.save(theProduct);
 		     } catch (WriterException e) {
 		            System.out.println("Could not generate QR Code, WriterException :: " + e.getMessage());
 		     } catch (IOException e) {
