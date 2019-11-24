@@ -23,8 +23,8 @@ public class AWSConfigurations {
 	
 	public AWSCredentials verifyCredentials() {
 		AWSCredentials credentials = new BasicAWSCredentials(
-				  "AKIAJ4MMMPBMCTHLVXPA", 
-				  "RH+i+Gm1FHTcKZU1+wd6DuB46ZKr+F96NItVXln7"
+				  "AKIAIV2KHGJDBHU3CB6A", 
+				  "Ngdlqa5yk1OAv40V2AScr9Nb+20C/UYBMRRMX9jG"
 				);
 		return credentials;
 	}
@@ -33,7 +33,7 @@ public class AWSConfigurations {
 		AmazonS3Client s3client = (AmazonS3Client) AmazonS3ClientBuilder
 				  .standard()
 				  .withCredentials(new AWSStaticCredentialsProvider(this.verifyCredentials()))
-				  .withRegion(Regions.US_EAST_2)
+				  .withRegion(Regions.US_EAST_1)
 				  .build();
 		return s3client;
 	}
@@ -70,7 +70,7 @@ public class AWSConfigurations {
 			String urlToObject = this.getS3Client().getResourceUrl(bucketName, bucketItemURL);
 			return urlToObject;
 		}catch(Exception e) {
-			return null;
+			return "was unable to upload to bucket "+e.getMessage();
 		}
 	}
 	
