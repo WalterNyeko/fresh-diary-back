@@ -5,4 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.fresh.freshdiary.model.Customers;
 
 @Repository
-public interface CustomersRepository extends JpaRepository<Customers, Long>{}
+public interface CustomersRepository extends JpaRepository<Customers, Long>{
+	Customers findByReceiptNumber(String receiptNumber);
+}

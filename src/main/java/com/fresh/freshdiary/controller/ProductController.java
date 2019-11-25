@@ -37,7 +37,7 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value="/fresh/v1/products/{productId}", method=RequestMethod.GET)
-	public Product getProduct(@PathVariable Long productId) {
+	public Product getProduct(@PathVariable(value="productId") Long productId) {
 		Product product = productService.findById(productId);
 		return product;
 	}

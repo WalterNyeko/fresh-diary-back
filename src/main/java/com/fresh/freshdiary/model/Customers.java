@@ -37,7 +37,7 @@ public class Customers {
 	@Column(name = "location")
 	private String location;
 	
-	@Column(name = "receipt_number", nullable=false)
+	@Column(name = "receipt_number", nullable=false, unique = true)
 	private String receiptNumber;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)

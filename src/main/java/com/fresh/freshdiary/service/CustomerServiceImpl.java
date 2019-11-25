@@ -1,7 +1,5 @@
 package com.fresh.freshdiary.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +33,9 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Customers findCustomerByFirstName(String firstName) {
-		// TODO Auto-generated method stub
-		return null;
+	public Customers findByReceiptNumber(String receiptNumber) {
+		Customers customer = customersRepository.findByReceiptNumber(receiptNumber);
+		return customer;
 	}
 
 }

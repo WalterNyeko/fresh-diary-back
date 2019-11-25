@@ -11,7 +11,7 @@ public interface CustomerService {
 	
 	Iterable<Customers> listAllCustomers();
 	
-	Customers findCustomerByFirstName(String firstName);
+	Customers findByReceiptNumber(String firstName);
 	
 
 }
