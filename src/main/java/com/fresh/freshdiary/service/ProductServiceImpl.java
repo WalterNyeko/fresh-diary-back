@@ -11,12 +11,19 @@ import com.fresh.freshdiary.aws.Slug;
 import com.fresh.freshdiary.model.Product;
 import com.fresh.freshdiary.repository.ProductRepository;
 import com.google.zxing.WriterException;
+import org.springframework.core.env.Environment;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+	
 	private static final String QR_CODE_IMAGE_PATH = "./src/main/resources/qrcodes/";
+	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+    private Environment env;
+	
 	@Override
 	public Product saveProduct(Product product) {
 		try {
@@ -26,9 +33,9 @@ public class ProductServiceImpl implements ProductService {
 			Product theProduct = productRepository.findByProductName(product.getProductName());
 			
 			 try {
-				 QRCodeGenerator.generateQRCodeImage("https://fresh-diary-app.herokuapp.com/#/draw/"+theProduct.getId(), 
+				 QRCodeGenerator.generateQRCodeImage(env.getProperty("app.qr.code.link.base")+theProduct.getId(), 
 						 350, 350, QR_CODE_IMAGE_PATH+slug.makeSlug(theProduct.getProductName())+".jpg");
-				 theProduct.setProductQRLink(aws.uploadToBucket("fresh-diary", slug.makeSlug(theProduct.getProductName()), 
+				 theProduct.setProductQRLink(aws.uploadToBucket(env.getProperty("aws.bucket.name"), slug.makeSlug(theProduct.getProductName()), 
 						 QR_CODE_IMAGE_PATH+slug.makeSlug(theProduct.getProductName())+".jpg"));
 				 productRepository.save(theProduct);
 		     } catch (WriterException e) {

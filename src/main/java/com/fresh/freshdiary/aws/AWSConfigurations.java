@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -12,19 +15,21 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.Bucket;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 
 public class AWSConfigurations {
+	
+	@Autowired
+    private Environment env;
 
 	public AWSConfigurations() {}
 	
 	public AWSCredentials verifyCredentials() {
 		AWSCredentials credentials = new BasicAWSCredentials(
-				  "AKIAIV2KHGJDBHU3CB6A", 
-				  "Ngdlqa5yk1OAv40V2AScr9Nb+20C/UYBMRRMX9jG"
+				  env.getProperty("aws.credential.access.key"), 
+				  env.getProperty("aws.credential.secret.key")
 				);
 		return credentials;
 	}
