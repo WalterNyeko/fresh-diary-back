@@ -2,16 +2,18 @@ package com.fresh.freshdiary.service;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fresh.freshdiary.aws.AWSConfigurations;
+import com.fresh.freshdiary.aws.EnvironmentVariables;
 import com.fresh.freshdiary.aws.QRCodeGenerator;
 import com.fresh.freshdiary.aws.Slug;
 import com.fresh.freshdiary.model.Product;
 import com.fresh.freshdiary.repository.ProductRepository;
 import com.google.zxing.WriterException;
-import org.springframework.core.env.Environment;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -22,7 +24,9 @@ public class ProductServiceImpl implements ProductService {
 	private ProductRepository productRepository;
 	
 	@Autowired
-    private Environment env;
+	private EnvironmentVariables envVariable;
+	
+	private static final Logger logger = LoggerFactory.getLogger(AWSConfigurations.class);
 	
 	@Override
 	public Product saveProduct(Product product) {
@@ -31,12 +35,15 @@ public class ProductServiceImpl implements ProductService {
 			AWSConfigurations aws = new AWSConfigurations();
 			productRepository.save(product);
 			Product theProduct = productRepository.findByProductName(product.getProductName());
-			
 			 try {
-				 QRCodeGenerator.generateQRCodeImage(env.getProperty("app.qr.code.link.base")+theProduct.getId(), 
+				 QRCodeGenerator.generateQRCodeImage(envVariable.getAwsQRCodeBaseLink()+theProduct.getId(), 
 						 350, 350, QR_CODE_IMAGE_PATH+slug.makeSlug(theProduct.getProductName())+".jpg");
-				 theProduct.setProductQRLink(aws.uploadToBucket(env.getProperty("aws.bucket.name"), slug.makeSlug(theProduct.getProductName()), 
-						 QR_CODE_IMAGE_PATH+slug.makeSlug(theProduct.getProductName())+".jpg"));
+				 String uploadedFileURL = aws.uploadToBucket(envVariable.getBucket(), 
+						 slug.makeSlug(theProduct.getProductName()), 
+						 QR_CODE_IMAGE_PATH+slug.makeSlug(theProduct.getProductName())+".jpg", 
+						 envVariable.getAwsAccessKeyId(), 
+						 envVariable.getAwsSecretKey());
+				 theProduct.setProductQRLink(uploadedFileURL);
 				 productRepository.save(theProduct);
 		     } catch (WriterException e) {
 		            System.out.println("Could not generate QR Code, WriterException :: " + e.getMessage());
