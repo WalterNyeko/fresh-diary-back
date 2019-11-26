@@ -13,5 +13,5 @@ public interface CustomerService {
 	
 	Customers findByReceiptNumber(String firstName);
 	
-
+	Customers findByProduct(Long productId);
 }

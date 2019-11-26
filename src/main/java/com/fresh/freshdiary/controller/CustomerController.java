@@ -40,5 +40,11 @@ public class CustomerController {
 		return customers;
 		
 	}
+	
+	@RequestMapping(value="/fresh/v1/product/{productId}/winner")
+	public Customers getWinningCustomerPerProduct(@PathVariable(value="productId") Long productId) {
+		Customers theWinner = service.findByProduct(productId);
+		return theWinner;
+	}
 
 }
