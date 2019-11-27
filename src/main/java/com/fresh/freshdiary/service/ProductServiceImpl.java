@@ -26,8 +26,6 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private EnvironmentVariables envVariable;
 	
-	private static final Logger logger = LoggerFactory.getLogger(AWSConfigurations.class);
-	
 	@Override
 	public Product saveProduct(Product product) {
 		try {

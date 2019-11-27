@@ -47,6 +47,7 @@ public class ProductController {
 		Product theProduct = productService.findById(productId);
 		theProduct.setProductName(product.getProductName());
 		theProduct.setProductAWSLink(product.getProductAWSLink());
+		theProduct.setProductDescription(product.getProductDescription());
 		productService.saveProduct(theProduct);
 		return product;
 	}
